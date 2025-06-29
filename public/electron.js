@@ -34,5 +34,8 @@ ipcMain.handle('get-form-by-id', async (form_id) => {
 ipcMain.handle('get-client-by-name', async (client_name) => {
     return db.getClientByName(client_name);
 });
+ipcMain.handle('get-clients', async () => {
+    return db.getClients();
+});
 
 

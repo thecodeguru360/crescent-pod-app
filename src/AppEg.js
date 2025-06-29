@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import ProofOfDeliveryForm from './ProofOfDeliveryForm';
 import './ProofOfDeliveryForm'
 import ProofOfDeliveryDemo from './ProofOfDeliveryDemo';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
-function App() {
+function AppEg() {
     const [notes, setNotes] = useState([]);
 
     useEffect(() => {

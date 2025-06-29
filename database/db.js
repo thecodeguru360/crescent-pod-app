@@ -7,7 +7,7 @@ const db = new sqlite3.Database(dbPath);
 // Create tables if not exists
 
 db.serialize(() => {
-    db.run(`CREATE TABLE users (
+    db.run(`CREATE TABLE IF NOT EXISTS  users (
 	"id"	INTEGER NOT NULL,
 	"username"	TEXT NOT NULL,
 	"password"	TEXT NOT NULL,
@@ -16,7 +16,7 @@ db.serialize(() => {
 })
 
 db.serialize(() => {
-    db.run(`CREATE TABLE client (
+    db.run(`CREATE TABLE IF NOT EXISTS  client (
 	"id"	INTEGER NOT NULL,
 	"client_name"	TEXT NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
@@ -24,7 +24,7 @@ db.serialize(() => {
 })
 
 db.serialize(() => {
-    db.run(`CREATE TABLE pod_form (
+    db.run(`CREATE TABLE IF NOT EXISTS  pod_form (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     client_id INTEGER,
     dated TEXT,
@@ -73,6 +73,14 @@ module.exports = {
                 } else {
                     resolve(rows);
                 }
+            });
+        });
+    },
+    getClients: () => {
+        return new Promise((resolve, reject) => {
+            db.all('SELECT * FROM client', [], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
             });
         });
     },

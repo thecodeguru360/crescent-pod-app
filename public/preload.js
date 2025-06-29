@@ -9,5 +9,6 @@ contextBridge.exposeInMainWorld("api", {
     addForm: (formData, client_id) => ipcRenderer.invoke("add-form"),
     addClient: (client_name) => ipcRenderer.invoke("add-client"),
     getClientByName: (client_name) => ipcRenderer.invoke("get-client-by-name"),
+    getClients: () => ipcRenderer.invoke("get-clients"),
 });
 

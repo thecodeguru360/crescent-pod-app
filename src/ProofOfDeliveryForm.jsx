@@ -1,13 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./ProofOfDeliveryForm.css";
+import AutocompleteInput from "./AutoCompleteInput";
+
+const clientsData = [
+  { id: 1, client_name: "ABC Company" },
+  { id: 2, client_name: "XYZ Corporation" },
+  { id: 3, client_name: "Ahmed Trading Co" },
+  { id: 4, client_name: "Smith & Associates" },
+  { id: 5, client_name: "Wilson Enterprises" },
+];
 
 const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
   const {
     register,
+    control,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [clients, setClients] = useState(clientsData);
+
+  useEffect(() => {
+    if (window.api) {
+      // if (window.api.addNote())
+      //     window.api.addNote().then(() => "Note added")
+      if (window.api.getClients()) {
+        window.api.getClients().then((data) => {
+          console.log(data);
+          setClients(data);
+        });
+      } else console.error("window.api.getClients not defined");
+    } else {
+      console.error("window.api or window.api.getClients is undefined");
+    }
+  }, []);
 
   const onSubmit = (data) => {
     console.log(data);
@@ -37,7 +64,7 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
             <input className="form-input" {...register("dated")} type="date" />
           </div>
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <div className="label-container">
               <span className="label-en">Name of Consignee:</span>
               <span className="label-ur">مال وصول کنندہ کا نام:</span>
@@ -46,6 +73,19 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
               className="form-input"
               {...register("consigneeName")}
               type="text"
+            />
+          </div> */}
+          <div className="form-group">
+            <div className="label-container">
+              <span className="label-en">Name of Consignee:</span>
+              <span className="label-ur">مال وصول کنندہ کا نام:</span>
+            </div>
+            <AutocompleteInput
+              name="consigneeName"
+              control={control} // from useForm()
+              suggestions={clients}
+              className="form-input"
+              placeholder="Start typing client name..."
             />
           </div>
 
