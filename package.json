@@ -10,14 +10,15 @@
     "concurrently": "^9.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hook-form": "^7.59.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "main": "public/electron.js",
   "scripts": {
     "start": "react-scripts start",
-  "electron": "electron .",
-  "dev": "concurrently \"npm start\" \"npm run electron\"",
+    "electron": "electron .",
+    "dev": "concurrently \"npm start\" \"npm run electron\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -42,6 +43,25 @@
   },
   "devDependencies": {
     "electron": "^37.1.0",
+    "electron-builder": "^26.0.12",
     "sqlite3": "^5.1.7"
+  },
+  "build": {
+    "appId": "com.webnbit.crescentpod",
+    "files": [
+      "build/**/*",
+      "public/electron.js",
+      "public/preload.js",
+      "database/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "database/",
+        "to": "database/",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
   }
 }

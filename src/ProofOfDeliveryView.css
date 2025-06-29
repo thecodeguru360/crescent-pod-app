@@ -1,0 +1,212 @@
+/* ProofOfDeliveryView.css */
+
+.proof-of-delivery-view-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #000;
+  border: 1px solid #fff; /* A subtle border to contain the view */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.view-header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #000;
+  padding-bottom: 10px;
+}
+
+.view-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.view-subtitle {
+  font-size: 14px;
+  margin: 5px 0;
+  direction: rtl; /* For Urdu text */
+}
+
+.view-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 15px; /* Smaller vertical gap to match image density */
+  margin-bottom: 10px;
+}
+
+.view-group {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5px; /* Space between rows in a group */
+}
+
+.view-group.full-width {
+  grid-column: span 2;
+}
+
+.view-label-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline; /* Align text baselines */
+  margin-bottom: 2px; /* Less space between label and value */
+}
+
+.view-label-en {
+  font-weight: bold;
+  font-size: 12px;
+  white-space: nowrap; /* Prevent wrapping for labels */
+}
+
+.view-label-ur {
+  font-size: 12px;
+  direction: rtl;
+  text-align: right;
+  white-space: nowrap; /* Prevent wrapping for labels */
+}
+
+.view-value {
+  border-bottom: 1px dashed #000; /* Dashed line similar to the image */
+  padding: 2px 0;
+  font-size: 13px; /* Slightly larger font for values */
+  min-height: 18px; /* Ensure consistent height */
+  word-wrap: break-word; /* Allow long text to wrap */
+}
+
+.textarea-view-value {
+  border: 1px dashed #000; /* Border for textarea-like fields */
+  padding: 5px;
+  min-height: 50px; /* Adjust height for multi-line text */
+  word-wrap: break-word;
+}
+
+/* Specific adjustments for sections with tables */
+.view-table-section {
+  margin-top: 15px;
+  border: 1px solid #000; /* Outer border for the table sections */
+}
+
+.view-table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid #000;
+  background-color: #f0f0f0; /* Light background for headers */
+}
+
+.view-table-header-cell {
+  padding: 8px 5px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 11px; /* Smaller font for header cells */
+  border-right: 1px solid #000;
+}
+
+.view-table-header-cell:last-child {
+  border-right: none;
+}
+
+.view-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: 60px; /* Adjust height for signatures/values */
+}
+
+.view-table-cell {
+  padding: 5px;
+  border-right: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Align content to the bottom */
+  align-items: center; /* Center content horizontally in the cell */
+}
+
+.view-table-cell:last-child {
+  border-right: none;
+}
+
+.view-table-value {
+  font-size: 13px; /* Font size for values within table cells */
+  text-align: center;
+  width: 100%; /* Ensure content spans the cell */
+  padding-bottom: 2px; /* Space from the bottom line */
+  border-bottom: 1px dashed #000; /* Dashed line for values in cells */
+}
+
+/* Remarks section */
+.remarks-view-section {
+  margin-top: 15px;
+}
+
+.remarks-view-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.remarks-view-value {
+  border: 1px dashed #000; /* Dashed border for remarks area */
+  padding: 8px;
+  min-height: 70px;
+  width: 100%;
+  font-size: 13px;
+  word-wrap: break-word;
+}
+
+/* Print specific styles to ensure consistency and hide buttons */
+@media print {
+  .proof-of-delivery-view-container {
+    max-width: none;
+    margin: 0;
+    padding: 10px;
+    box-shadow: none;
+    border: none;
+  }
+
+  .button-container {
+    display: none !important;
+  }
+
+  .view-value,
+  .textarea-view-value,
+  .view-table-value,
+  .remarks-view-value {
+    border-bottom: 1px dashed #000 !important; /* Ensure dashed line prints */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: white !important; /* Ensure white background */
+  }
+
+  .view-table-section {
+    border: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .view-table-header-cell,
+  .view-table-cell {
+    border-right: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .view-table-header {
+    border-bottom: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: #f0f0f0 !important; /* Ensure header background prints */
+  }
+
+  .view-header {
+    border-bottom: 2px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page {
+    margin: 0.5in;
+  }
+}

@@ -5,8 +5,9 @@ const db = require('../database/db');
 function createWindow() {
     const win = new BrowserWindow({
         width: 900,
-        height: 600,
+        height: 700,
         webPreferences: {
+            devTools: true,
             preload: path.resolve(__dirname, "./preload.js"),
             contextIsolation: true,
             nodeIntegration: false,
@@ -21,6 +22,17 @@ function createWindow() {
 app.whenReady().then(createWindow);
 
 // Example: handle a DB request from React
-ipcMain.handle('get-notes', async () => {
-    return db.getAllNotes();
+ipcMain.handle('add-form', async (formData, client_id) => {
+    return db.addForm(formData, client_id);
 });
+ipcMain.handle('add-client', async (client_name) => {
+    return db.addClient(client_name);
+});
+ipcMain.handle('get-form-by-id', async (form_id) => {
+    return db.getFormById(form_id);
+});
+ipcMain.handle('get-client-by-name', async (client_name) => {
+    return db.getClientByName(client_name);
+});
+
+

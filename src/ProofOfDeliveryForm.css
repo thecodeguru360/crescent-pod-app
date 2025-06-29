@@ -1,0 +1,307 @@
+.proof-of-delivery-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: white;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #000;
+  padding-bottom: 10px;
+}
+
+.form-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.form-subtitle {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.label-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.label-en {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.label-ur {
+  font-size: 12px;
+  direction: rtl;
+  text-align: right;
+}
+
+.form-input {
+  border: 1px solid #000;
+  padding: 8px;
+  font-size: 14px;
+  min-height: 25px;
+}
+
+.form-input:focus {
+  outline: 2px solid #007bff;
+}
+
+.textarea-input {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.signature-section {
+  margin-top: 30px;
+  border: 2px solid #000;
+}
+
+.signature-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid #000;
+}
+
+.signature-header-cell {
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  border-right: 1px solid #000;
+}
+
+.signature-header-cell:last-child {
+  border-right: none;
+}
+
+.signature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: 80px;
+}
+
+.signature-cell {
+  padding: 10px;
+  border-right: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signature-cell:last-child {
+  border-right: none;
+}
+
+.signature-input {
+  border: none;
+  font-size: 14px;
+  min-height: 40px;
+  background: transparent;
+}
+
+.signature-input:focus {
+  outline: 1px solid #007bff;
+}
+
+.receiver-section {
+  margin-top: 20px;
+  border: 2px solid #000;
+}
+
+.receiver-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid #000;
+}
+
+.receiver-header-cell {
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  border-right: 1px solid #000;
+}
+
+.receiver-header-cell:last-child {
+  border-right: none;
+}
+
+.receiver-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: 80px;
+}
+
+.receiver-cell {
+  padding: 10px;
+  border-right: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.receiver-cell:last-child {
+  border-right: none;
+}
+
+.remarks-section {
+  margin-top: 20px;
+}
+
+.remarks-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.remarks-input {
+  border: 1px solid #000;
+  padding: 10px;
+  min-height: 60px;
+  width: 100%;
+  font-size: 14px;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.submit-button,
+.print-button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.submit-button:hover,
+.print-button:hover {
+  background: #0056b3;
+}
+
+/* View-only styles */
+.form-value {
+  border: 1px solid #000;
+  padding: 8px;
+  font-size: 14px;
+  min-height: 25px;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.signature-value {
+  border: none;
+  font-size: 14px;
+  min-height: 40px;
+  background: transparent;
+  color: #333;
+  padding: 5px;
+}
+
+.remarks-value {
+  border: 1px solid #000;
+  padding: 10px;
+  min-height: 60px;
+  width: 100%;
+  font-size: 14px;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.textarea-value {
+  min-height: 60px;
+}
+
+/* Print Styles */
+@media print {
+  .proof-of-delivery-container {
+    max-width: none;
+    margin: 0;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .submit-button,
+  .print-button,
+  .button-container {
+    display: none !important;
+  }
+
+  .form-input,
+  .signature-input,
+  .remarks-input,
+  .form-value,
+  .signature-value,
+  .remarks-value {
+    border: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: white !important;
+  }
+
+  .form-input:focus,
+  .signature-input:focus,
+  .remarks-input:focus {
+    outline: none;
+  }
+
+  .signature-section,
+  .receiver-section {
+    border: 2px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .signature-header-cell,
+  .receiver-header-cell {
+    border-right: 1px solid #000 !important;
+    border-bottom: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .signature-cell,
+  .receiver-cell {
+    border-right: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .form-header {
+    border-bottom: 2px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page {
+    margin: 0.5in;
+  }
+}
