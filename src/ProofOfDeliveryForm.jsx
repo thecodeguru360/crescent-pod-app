@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import "./ProofOfDeliveryForm.css";
 import AutocompleteInput from "./AutoCompleteInput";
+import { Link } from "react-router-dom";
+import ActionBar from "./ActionBar";
 
 const clientsData = [
   { id: 1, client_name: "ABC Company" },
@@ -19,6 +20,7 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [client_id, setClientId] = useState();
   const [clients, setClients] = useState(clientsData);
 
   useEffect(() => {
@@ -37,9 +39,28 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
   }, []);
 
   const onSubmit = (data) => {
-    console.log(data);
+    console.log(client_id);
+    if (!client_id) {
+      if (window.api) {
+        window.api.addClient(data.consigneeName).then((response) => {
+          console.log(response);
+          saveFormData({ ...data, client_id: response.id });
+        });
+      }
+    } else {
+      saveFormData({ ...data, client_id });
+    }
     if (onFormSubmit) {
-      onFormSubmit(data);
+      // onFormSubmit(data);
+    }
+  };
+
+  const saveFormData = (data) => {
+    console.log(data);
+    if (window.api) {
+      window.api.addForm(data).then((response) => {
+        console.log(response);
+      });
     }
   };
 
@@ -49,6 +70,26 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
 
   return (
     <div className="proof-of-delivery-container">
+      <ActionBar>
+        <Link className="action" to="/" title="Back to Control Panel">
+          <div>
+            <img
+              src={process.env.PUBLIC_URL + "/house.png"}
+              alt="crescent logo"
+            />
+          </div>
+        </Link>
+        <button
+          className="action"
+          type="button"
+          onClick={handleSubmit(onSubmit)}
+          title="Save Data"
+        >
+          <div>
+            <img src={process.env.PUBLIC_URL + "/save.png"} alt="save record" />
+          </div>
+        </button>
+      </ActionBar>
       <div>
         <div className="form-header">
           <h1 className="form-title">PROOF OF DELIVERY</h1>
@@ -85,6 +126,7 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
               control={control} // from useForm()
               suggestions={clients}
               className="form-input"
+              onSelect={setClientId}
               placeholder="Start typing client name..."
             />
           </div>
@@ -159,8 +201,8 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
 
           <div className="form-group">
             <div className="label-container">
-              <span className="label-en">Vgm/Vgm Ref:</span>
-              <span className="label-ur">وی جی ایم/وی جی ایم ریف:</span>
+              <span className="label-en">Igm/VIR No:</span>
+              <span className="label-ur">آئی جی ایم / وی آئی آر نمبر:</span>
             </div>
             <input
               className="form-input"
@@ -343,30 +385,33 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
             <div className="receiver-cell"></div>
           </div>
         </div>
-
-        <div className="remarks-section">
-          <div className="remarks-label">
-            <span>Remarks:</span>
-            <span style={{ float: "right", direction: "rtl" }}>ملاحظات:</span>
+        <div className="form-group full-width">
+          <div className="label-container">
+            <span className="label-en">Remarks:</span>
+            <span className="label-ur">ملاحظات:</span>
           </div>
-          <textarea className="remarks-input" {...register("remarks")} />
+          <textarea
+            className="form-input textarea-input"
+            {...register("remarks")}
+          />
         </div>
 
         <div className="button-container">
-          <button
-            type="button"
-            className="submit-button"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Submit Form
-          </button>
-          <button
-            type="button"
-            className="print-button"
-            onClick={handlePrintPreview}
-          >
-            Print Preview
-          </button>
+          <ActionBar>
+            <button
+              className="action"
+              type="button"
+              onClick={handleSubmit(onSubmit)}
+              title="Save Data"
+            >
+              <div>
+                <img
+                  src={process.env.PUBLIC_URL + "/save.png"}
+                  alt="save record"
+                />
+              </div>
+            </button>
+          </ActionBar>
         </div>
       </div>
     </div>

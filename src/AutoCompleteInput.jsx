@@ -8,6 +8,7 @@ const AutocompleteInput = ({
   suggestions = [],
   placeholder = "",
   className = "form-input",
+  onSelect,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,10 +43,12 @@ const AutocompleteInput = ({
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
     onChange(inputValue);
+    onSelect(undefined);
   };
 
   const handleSuggestionClick = (suggestion) => {
     onChange(suggestion.client_name);
+    onSelect(suggestion.id);
     setIsOpen(false);
     setHighlightedIndex(-1);
     inputRef.current?.focus();

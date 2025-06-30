@@ -1,14 +1,18 @@
 import React from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home.jsx";
-import ProofOfDeliveryDemo from "./ProofOfDeliveryDemo";
+import ProofOfDeliveryForm from "./ProofOfDeliveryForm";
+import ProofOfDeliveryView from "./ProofOfDeliveryView.jsx";
+import SearchPod from "./SearchPod.jsx";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/add-form" element={<ProofOfDeliveryDemo />} />
+        <Route path="/add-form" element={<ProofOfDeliveryForm />} />
+        <Route path="/search" element={<SearchPod />} />
+        <Route path="/view-form/:id" element={<ProofOfDeliveryView />} />
       </Routes>
     </Router>
   );

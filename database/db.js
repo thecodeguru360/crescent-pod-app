@@ -57,7 +57,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             db.run('INSERT INTO client(client_name) VALUES (?)', [client_name], function (err) {
                 if (err) reject(err);
-                else resolve({ id: this.lastID, content });
+                else resolve({ id: this.lastID, client_name });
             });
         });
     },
@@ -93,7 +93,7 @@ module.exports = {
         });
     },
 
-    addForm: (formData, client_id) => {
+    addForm: (formData) => {
         return new Promise((resolve, reject) => {
             // Define the columns in the order they appear in the INSERT statement
             const columns = [
@@ -107,7 +107,7 @@ module.exports = {
 
             // Map formData keys to an array of values, ensuring order matches columns
             const values = [
-                client_id,
+                formData.client_id || null,
                 formData.dated || null,
                 formData.consigneeName || null,
                 formData.blAwbNo || null,
