@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import AutocompleteInput from "./AutoCompleteInput";
 import { Link } from "react-router-dom";
 import ActionBar from "./ActionBar";
+import { useNavigate } from "react-router-dom";
 
 const clientsData = [
   { id: 1, client_name: "ABC Company" },
@@ -16,10 +17,10 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
   const {
     register,
     control,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
   const [client_id, setClientId] = useState();
   const [clients, setClients] = useState(clientsData);
 
@@ -60,6 +61,9 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
     if (window.api) {
       window.api.addForm(data).then((response) => {
         console.log(response);
+        if (response && response.id) {
+          navigate("/view-form/" + response.id);
+        }
       });
     }
   };
@@ -102,7 +106,12 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
               <span className="label-en">Dated:</span>
               <span className="label-ur">تاریخ:</span>
             </div>
-            <input className="form-input" {...register("dated")} type="date" />
+            <input
+              className="form-input"
+              {...register("dated")}
+              value={new Date().toISOString().substring(0, 10)}
+              type="date"
+            />
           </div>
 
           {/* <div className="form-group">

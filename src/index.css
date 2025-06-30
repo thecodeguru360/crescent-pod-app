@@ -72,6 +72,32 @@ body {
   width: 26px;
 }
 
+.search-controls {
+  justify-content: space-between;
+  margin: 30px 0px;
+}
+
+.search-card {
+  flex-grow: 1;
+  padding: 16px;
+  min-height: 100px;
+  min-width: 180px;
+  background-color: #fdffed;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.searchBtn {
+  padding: 8px 16px;
+  background: #90ffa6;
+  border: none;
+}
+
 .text-center {
   text-align: center;
 }

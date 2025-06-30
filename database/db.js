@@ -92,7 +92,14 @@ module.exports = {
             });
         });
     },
-
+    getRecentForms: () => {
+        return new Promise((resolve, reject) => {
+            db.all('SELECT id,dated,consigneeName FROM pod_form ORDER BY id DESC LIMIT 30', [], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+    },
     addForm: (formData) => {
         return new Promise((resolve, reject) => {
             // Define the columns in the order they appear in the INSERT statement
@@ -150,6 +157,23 @@ module.exports = {
     getFormById: (id) => {
         return new Promise((resolve, reject) => {
             db.get('SELECT * FROM pod_form WHERE id = ?', [id], (err, row) => {
+                if (err) reject(err);
+                else resolve(row);
+            });
+        });
+    },
+    getFormByDate: (date) => {
+        const searchTerm = `%${date}%`;
+        return new Promise((resolve, reject) => {
+            db.get('SELECT * FROM pod_form WHERE dated LIKE ? ORDER BY id DESC', [searchTerm], (err, row) => {
+                if (err) reject(err);
+                else resolve(row);
+            });
+        });
+    },
+    getFormByClientId: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get('SELECT * FROM pod_form WHERE client_id = ?', [id], (err, row) => {
                 if (err) reject(err);
                 else resolve(row);
             });
