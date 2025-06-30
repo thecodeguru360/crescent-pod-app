@@ -1,196 +1,279 @@
-import React from "react";
-import "./ProofOfDeliveryView.css"; // Import the new CSS file
+import React, { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
+import ActionBar from "./ActionBar";
+import { Link } from "react-router-dom";
+import "./ProofOfDeliveryView.css";
 
 const ProofOfDeliveryView = ({ data = {} }) => {
-  const handlePrintPreview = () => {
-    window.print();
-  };
+  const { id } = useParams();
+  const [formData, setFormData] = useState(data);
+  const printRef = useRef();
+  useEffect(() => {
+    console.log(id);
+    if (window.api) {
+      // the Form data
+      window.api.getFormById(id).then((response) => {
+        console.log(response);
+        if (response.id) {
+          setFormData(response);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(printRef.current);
+  }, [printRef]);
+
+  const handlePrintPreview = useReactToPrint({ contentRef: printRef });
 
   return (
-    <div className="proof-of-delivery-view-container">
-      {" "}
-      {/* Updated class name */}
-      <div>
-        <div className="view-header">
-          {" "}
-          {/* Updated class name */}
-          <h1 className="view-title">PROOF OF DELIVERY</h1>{" "}
-          {/* Updated class name */}
-          <p className="view-subtitle">ڈیلیوری کا ثبوت</p>{" "}
-          {/* Updated class name */}
+    <div>
+      <div className="action-bar-container">
+        <ActionBar>
+          <Link className="action" to="/" title="Back to Control Panel">
+            <div>
+              <img
+                src={process.env.PUBLIC_URL + "/house.png"}
+                alt="Home logo"
+              />
+            </div>
+          </Link>
+          <Link className="action" to="/add-form" title="Add New POD">
+            <div>
+              <img
+                src={process.env.PUBLIC_URL + "/add-file.png"}
+                alt="add file logo"
+              />
+            </div>
+          </Link>
+          <button
+            className="action"
+            style={{ marginLeft: "auto" }}
+            type="button"
+            onClick={handlePrintPreview}
+            title="Print"
+          >
+            <div>
+              <img
+                src={process.env.PUBLIC_URL + "/printer.png"}
+                alt="save record"
+              />
+            </div>
+          </button>
+        </ActionBar>
+      </div>
+      <div className="proof-of-delivery-view-container" ref={printRef}>
+        <div className="top-header">
+          <div>
+            <img
+              src={process.env.PUBLIC_URL + "/crescent-logo.png"}
+              alt="crescent logo"
+            />
+          </div>
+          <div className="view-header">
+            <h1 className="view-title">PROOF OF DELIVERY</h1>{" "}
+            <p className="view-subtitle">ڈیلیوری کا ثبوت</p>{" "}
+            <div className="">
+              <b>POD #: {formData.id || ""}</b>
+            </div>
+          </div>
+          <div>
+            <ul className="contact-details">
+              <li>(021)35157591-94 (KHI)</li>
+              <li>(021) 32312731 (KHI)</li>
+              <li>(042) 36305305 (LHR)</li>
+              <li>(040)4462402 (SAHIWAL)</li>
+              <li>(051) 5464062 (ISL)</li>
+              <li>crescentservices1@gmail.com</li>
+              <li>www.crescentservices.com.pk</li>
+              <li>
+                House No. A-1, G-22, Park Lane, Kehkashan Block – 5, Clifton,
+                Karachi
+              </li>
+            </ul>
+          </div>
         </div>
+        <div className="view-sub-header"></div>
 
         <div className="view-grid">
           {" "}
           {/* Updated class name */}
-          <div className="view-group">
-            {" "}
-            {/* Updated class name */}
+          {/* <div className="view-group">
             <div className="view-label-container">
-              {" "}
-              {/* Updated class name */}
-              <span className="view-label-en">Ryan Ref:</span>{" "}
-              {/* Updated class name */}
-              <span className="view-label-ur">ریان ریف:</span>{" "}
-              {/* Updated class name */}
+              <span className="view-label-en">POD #:</span>
+              <span className="view-label-ur">پی او ڈی آئی ڈی:</span>
             </div>
-            <div className="view-value">{data.ryanRef || ""}</div>{" "}
-            {/* Updated class name */}
-          </div>
-          <div className="view-group">
-            <div className="view-label-container">
-              <span className="view-label-en">Client Ref:</span>
-              <span className="view-label-ur">کلائنٹ ریف:</span>
-            </div>
-            <div className="view-value">{data.clientRef || ""}</div>
-          </div>
+            <div className="view-value">{formData.id || ""}</div>
+          </div> */}
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Dated:</span>
               <span className="view-label-ur">تاریخ:</span>
             </div>
-            <div className="view-value">{data.dated || ""}</div>
+            <div className="view-value">{formData.dated || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Name of Consignee:</span>
               <span className="view-label-ur">مال وصول کنندہ کا نام:</span>
             </div>
-            <div className="view-value">{data.consigneeName || ""}</div>
+            <div className="view-value">{formData.consigneeName || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">B/L or AWB No:</span>
               <span className="view-label-ur">بی/ایل یا اے ڈبلیو بی نمبر:</span>
             </div>
-            <div className="view-value">{data.blAwbNo || ""}</div>
+            <div className="view-value">{formData.blAwbNo || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Description of Goods:</span>
               <span className="view-label-ur">اشیاء کی تفصیلات:</span>
             </div>
-            <div className="view-value">{data.goodsDescription || ""}</div>
+            <div className="view-value">{formData.goodsDescription || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Total Packages:</span>
               <span className="view-label-ur">کل پیکج کی تعداد:</span>
             </div>
-            <div className="view-value">{data.totalPackages || ""}</div>
+            <div className="view-value">{formData.totalPackages || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Total Gross Weight:</span>
               <span className="view-label-ur">کل مجموعی وزن:</span>
             </div>
-            <div className="view-value">{data.totalGrossWeight || ""}</div>
+            <div className="view-value">{formData.totalGrossWeight || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Total Net Weight:</span>
               <span className="view-label-ur">کل خالص وزن:</span>
             </div>
-            <div className="view-value">{data.totalNetWeight || ""}</div>
+            <div className="view-value">{formData.totalNetWeight || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Vessel:</span>
               <span className="view-label-ur">جہاز کا نام:</span>
             </div>
-            <div className="view-value">{data.vessel || ""}</div>
+            <div className="view-value">{formData.vessel || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
-              <span className="view-label-en">Vgm/Vgm Ref:</span>
-              <span className="view-label-ur">وی جی ایم/وی جی ایم ریف:</span>
+              <span className="view-label-en">igm/VIR No:</span>
+              <span className="view-label-ur">
+                آئی جی ایم / وی آئی آر نمبر:
+              </span>
             </div>
-            <div className="view-value">{data.vgmRef || ""}</div>
+            <div className="view-value">{formData.igmVirNo || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">No. of Packages:</span>
               <span className="view-label-ur">پیکج کی تعداد:</span>
             </div>
-            <div className="view-value">{data.noOfPackages || ""}</div>
+            <div className="view-value">{formData.noOfPackages || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Container No:</span>
               <span className="view-label-ur">کنٹینر نمبر:</span>
             </div>
-            <div className="view-value">{data.containerNo || ""}</div>
+            <div className="view-value">{formData.containerNo || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Booking No & Date:</span>
               <span className="view-label-ur">بکنگ نمبر اور تاریخ:</span>
             </div>
-            <div className="view-value">{data.bookingNoDate || ""}</div>
+            <div className="view-value">{formData.bookingNoDate || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Vehicle No/Type:</span>
               <span className="view-label-ur">گاڑی نمبر/قسم:</span>
             </div>
-            <div className="view-value">{data.vehicleNoType || ""}</div>
+            <div className="view-value">{formData.vehicleNoType || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Driver Name:</span>
               <span className="view-label-ur">ڈرائیور کا نام:</span>
             </div>
-            <div className="view-value">{data.driverName || ""}</div>
+            <div className="view-value">{formData.driverName || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Driver Tel:</span>
               <span className="view-label-ur">ڈرائیور ٹیل:</span>
             </div>
-            <div className="view-value">{data.driverTel || ""}</div>
+            <div className="view-value">{formData.driverTel || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Delivery Person:</span>
               <span className="view-label-ur">ڈیلیوری پرسن:</span>
             </div>
-            <div className="view-value">{data.deliveryPerson || ""}</div>
+            <div className="view-value">{formData.deliveryPerson || ""}</div>
           </div>
           <div className="view-group">
             <div className="view-label-container">
               <span className="view-label-en">Phone No:</span>
               <span className="view-label-ur">فون نمبر:</span>
             </div>
-            <div className="view-value">{data.phoneNo || ""}</div>
+            <div className="view-value">{formData.phoneNo || ""}</div>
           </div>
           <div className="view-group full-width">
             <div className="view-label-container">
               <span className="view-label-en">Pickup Address:</span>
               <span className="view-label-ur">پک اپ ایڈریس:</span>
             </div>
-            <div className="textarea-view-value">
-              {" "}
-              {/* Updated class name */}
-              {data.pickupAddress || ""}
-            </div>
+            {formData.pickupAddress && (
+              <div className="textarea-view-value">
+                {" "}
+                {/* Updated class name */}
+                {formData.pickupAddress || ""}
+              </div>
+            )}
+            {!formData.pickupAddress && (
+              <div className="view-lines-container">
+                <div className="line"></div>
+                <div className="line"></div>
+                <div className="line"></div>
+              </div>
+            )}
           </div>
           <div className="view-group full-width">
             <div className="view-label-container">
               <span className="view-label-en">Delivery Address:</span>
               <span className="view-label-ur">ڈیلیوری ایڈریس:</span>
             </div>
-            <div className="textarea-view-value">
-              {" "}
-              {/* Updated class name */}
-              {data.deliveryAddress || ""}
-            </div>
+            {formData.deliveryAddress && (
+              <div className="textarea-view-value">
+                {" "}
+                {/* Updated class name */}
+                {formData.deliveryAddress || ""}
+              </div>
+            )}
+            {!formData.deliveryAddress && (
+              <div className="view-lines-container">
+                <div className="line"></div>
+                <div className="line"></div>
+                <div className="line"></div>
+              </div>
+            )}
           </div>
           <div className="view-group full-width">
             <div className="view-label-container">
               <span className="view-label-en">Contact Person/Cell No:</span>
               <span className="view-label-ur">رابطہ کار/سیل نمبر:</span>
             </div>
-            <div className="view-value">{data.contactPersonCell || ""}</div>
+            <div className="view-value">{formData.contactPersonCell || ""}</div>
           </div>
         </div>
 
@@ -224,17 +307,17 @@ const ProofOfDeliveryView = ({ data = {} }) => {
               <div className="view-table-value">
                 {" "}
                 {/* Updated class name */}
-                {data.arrivalDateTime || ""}
+                {formData.arrivalDateTime || ""}
               </div>
             </div>
             <div className="view-table-cell">
               <div className="view-table-value">
-                {data.gateInDateTime || ""}
+                {formData.gateInDateTime || ""}
               </div>
             </div>
             <div className="view-table-cell">
               <div className="view-table-value">
-                {data.gateOutDateTime || ""}
+                {formData.gateOutDateTime || ""}
               </div>
             </div>
           </div>
@@ -263,14 +346,18 @@ const ProofOfDeliveryView = ({ data = {} }) => {
             {" "}
             {/* Reusing view-table-row */}
             <div className="view-table-cell">
-              <div className="view-table-value">{data.receiverName || ""}</div>
-            </div>
-            <div className="view-table-cell">
-              <div className="view-table-value">{data.receivingDate || ""}</div>
+              <div className="view-table-value">
+                {formData.receiverName || ""}
+              </div>
             </div>
             <div className="view-table-cell">
               <div className="view-table-value">
-                {data.receiverSignature || ""}
+                {formData.receivingDate || ""}
+              </div>
+            </div>
+            <div className="view-table-cell">
+              <div className="view-table-value">
+                {formData.receiverSignature || ""}
               </div>
             </div>
           </div>
@@ -285,18 +372,21 @@ const ProofOfDeliveryView = ({ data = {} }) => {
             <span>Remarks:</span>
             <span style={{ direction: "rtl" }}>ملاحظات:</span>
           </div>
-          <div className="remarks-view-value">{data.remarks || ""}</div>{" "}
+          {formData.remarks && (
+            <div className="textarea-view-value">
+              {" "}
+              {/* Updated class name */}
+              {formData.remarks || ""}
+            </div>
+          )}
+          {!formData.remarks && (
+            <div className="view-lines-container">
+              <div className="line"></div>
+              <div className="line"></div>
+              <div className="line"></div>
+            </div>
+          )}
           {/* Updated class name */}
-        </div>
-
-        <div className="button-container">
-          <button
-            type="button"
-            className="print-button"
-            onClick={handlePrintPreview}
-          >
-            Print Preview
-          </button>
         </div>
       </div>
     </div>

@@ -1,14 +1,10 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-
-
-console.log("Preload script is executing");
-
 contextBridge.exposeInMainWorld("api", {
-    getFormById: (form_id) => ipcRenderer.invoke("get-form-by-id"),
-    addForm: (formData, client_id) => ipcRenderer.invoke("add-form"),
-    addClient: (client_name) => ipcRenderer.invoke("add-client"),
-    getClientByName: (client_name) => ipcRenderer.invoke("get-client-by-name"),
+    getFormById: (form_id) => ipcRenderer.invoke("get-form-by-id", form_id),
+    addForm: (formData) => ipcRenderer.invoke("add-form", formData),
+    addClient: (client_name) => ipcRenderer.invoke("add-client", client_name),
+    getClientByName: (client_name) => ipcRenderer.invoke("get-client-by-name", client_name),
     getClients: () => ipcRenderer.invoke("get-clients"),
 });
 

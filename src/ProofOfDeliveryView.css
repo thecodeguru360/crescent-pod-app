@@ -5,27 +5,49 @@
   margin: 20px auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  font-size: 12px;
+  font-size: 10px; /* Reduced by 2px */
   color: #000;
   border: 1px solid #fff; /* A subtle border to contain the view */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+.action-bar-container {
+  max-width: 844px;
+  margin: 10px auto;
+}
 
-.view-header {
+.top-header {
+  display: flex;
+  justify-content: space-between;
+}
+.logo {
+  width: 200px;
+}
+.contact-details {
+  font-size: 7px;
+  list-style-type: none;
+  text-align: right;
+  font-weight: bold;
+}
+
+.view-sub-header {
   text-align: center;
   margin-bottom: 20px;
-  border-bottom: 2px solid #000;
+  border-bottom: 1px solid #000;
   padding-bottom: 10px;
+}
+.view-header {
+  text-align: center;
+  margin-top: 16px;
 }
 
 .view-title {
-  font-size: 18px;
+  font-size: 16px; /* Reduced by 2px */
   font-weight: bold;
   margin: 0;
 }
 
 .view-subtitle {
-  font-size: 14px;
+  font-size: 12px; /* Reduced by 2px */
   margin: 5px 0;
   direction: rtl; /* For Urdu text */
 }
@@ -40,7 +62,7 @@
 .view-group {
   display: flex;
   flex-direction: column;
-  padding-bottom: 5px; /* Space between rows in a group */
+  padding-bottom: 2px; /* Space between rows in a group */
 }
 
 .view-group.full-width {
@@ -56,12 +78,13 @@
 
 .view-label-en {
   font-weight: bold;
-  font-size: 12px;
+  font-size: 10px; /* Reduced by 2px */
   white-space: nowrap; /* Prevent wrapping for labels */
 }
 
 .view-label-ur {
-  font-size: 12px;
+  font-size: 10px; /* Reduced by 2px */
+  font-weight: bold;
   direction: rtl;
   text-align: right;
   white-space: nowrap; /* Prevent wrapping for labels */
@@ -70,7 +93,7 @@
 .view-value {
   border-bottom: 1px dashed #000; /* Dashed line similar to the image */
   padding: 2px 0;
-  font-size: 13px; /* Slightly larger font for values */
+  font-size: 11px; /* Reduced by 2px */
   min-height: 18px; /* Ensure consistent height */
   word-wrap: break-word; /* Allow long text to wrap */
 }
@@ -99,7 +122,7 @@
   padding: 8px 5px;
   text-align: center;
   font-weight: bold;
-  font-size: 11px; /* Smaller font for header cells */
+  font-size: 9px; /* Reduced by 2px */
   border-right: 1px solid #000;
 }
 
@@ -126,12 +149,19 @@
   border-right: none;
 }
 
-.view-table-value {
-  font-size: 13px; /* Font size for values within table cells */
-  text-align: center;
-  width: 100%; /* Ensure content spans the cell */
-  padding-bottom: 2px; /* Space from the bottom line */
-  border-bottom: 1px dashed #000; /* Dashed line for values in cells */
+.view-lines-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  margin-top: 10px;
+}
+.line {
+  min-height: 1px;
+  width: 100%;
+  border-bottom: 1px dashed #000;
 }
 
 /* Remarks section */
@@ -142,7 +172,7 @@
 .remarks-view-label {
   font-weight: bold;
   margin-bottom: 5px;
-  font-size: 12px;
+  font-size: 10px; /* Reduced by 2px */
   display: flex;
   justify-content: space-between;
 }
@@ -152,7 +182,7 @@
   padding: 8px;
   min-height: 70px;
   width: 100%;
-  font-size: 13px;
+  font-size: 11px; /* Reduced by 2px */
   word-wrap: break-word;
 }
 
@@ -200,10 +230,13 @@
     background-color: #f0f0f0 !important; /* Ensure header background prints */
   }
 
-  .view-header {
-    border-bottom: 2px solid #000 !important;
+  .view-sub-header {
+    border-bottom: 1px solid #000 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+  .logo {
+    width: 150px;
   }
 
   @page {

@@ -22,16 +22,16 @@ function createWindow() {
 app.whenReady().then(createWindow);
 
 // Example: handle a DB request from React
-ipcMain.handle('add-form', async (formData, client_id) => {
-    return db.addForm(formData, client_id);
+ipcMain.handle('add-form', async (event, formData) => {
+    return db.addForm(formData);
 });
-ipcMain.handle('add-client', async (client_name) => {
+ipcMain.handle('add-client', async (event, client_name) => {
     return db.addClient(client_name);
 });
-ipcMain.handle('get-form-by-id', async (form_id) => {
+ipcMain.handle('get-form-by-id', async (event, form_id) => {
     return db.getFormById(form_id);
 });
-ipcMain.handle('get-client-by-name', async (client_name) => {
+ipcMain.handle('get-client-by-name', async (event, client_name) => {
     return db.getClientByName(client_name);
 });
 ipcMain.handle('get-clients', async () => {

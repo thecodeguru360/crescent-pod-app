@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ProofOfDeliveryForm from "./ProofOfDeliveryForm";
 import ProofOfDeliveryView from "./ProofOfDeliveryView";
+import { Link } from "react-router-dom";
 
 const ProofOfDeliveryDemo = () => {
   const [formData, setFormData] = useState(null);
@@ -43,6 +44,15 @@ const ProofOfDeliveryDemo = () => {
   return (
     <div style={styles.container}>
       <div style={styles.navigation}>
+        <Link
+          style={{
+            ...styles.navButton,
+          }}
+          to="/"
+        >
+          Home
+        </Link>
+
         <button
           style={{
             ...styles.navButton,
