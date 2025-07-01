@@ -3,19 +3,21 @@ import { useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import ActionBar from "./ActionBar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ProofOfDeliveryView.css";
 
 const ProofOfDeliveryView = ({ data = {} }) => {
   const { id } = useParams();
   const [formData, setFormData] = useState(data);
   const printRef = useRef();
+  const navigate = useNavigate();
   useEffect(() => {
     console.log(id);
     if (window.api) {
       // the Form data
       window.api.getFormById(id).then((response) => {
         console.log(response);
-        if (response.id) {
+        if (response && response.id) {
           setFormData(response);
         }
       });
@@ -26,12 +28,27 @@ const ProofOfDeliveryView = ({ data = {} }) => {
     console.log(printRef.current);
   }, [printRef]);
 
+  const handleBackAction = () => navigate(-1);
+
   const handlePrintPreview = useReactToPrint({ contentRef: printRef });
 
   return (
     <div>
       <div className="action-bar-container">
         <ActionBar>
+          <button
+            className="action"
+            type="button"
+            onClick={handleBackAction}
+            title="Go Back"
+          >
+            <div>
+              <img
+                src={process.env.PUBLIC_URL + "/left-arrow.png"}
+                alt="Go back"
+              />
+            </div>
+          </button>
           <Link className="action" to="/" title="Back to Control Panel">
             <div>
               <img
