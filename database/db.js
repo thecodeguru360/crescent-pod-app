@@ -164,8 +164,9 @@ module.exports = {
     },
     getFormByDate: (date) => {
         const searchTerm = `%${date}%`;
+        const query = `SELECT * FROM pod_form WHERE dated LIKE '${searchTerm}' ORDER BY id DESC`
         return new Promise((resolve, reject) => {
-            db.get('SELECT * FROM pod_form WHERE dated LIKE ? ORDER BY id DESC', [searchTerm], (err, row) => {
+            db.all(query, [], (err, row) => {
                 if (err) reject(err);
                 else resolve(row);
             });
@@ -173,7 +174,7 @@ module.exports = {
     },
     getFormByClientId: (id) => {
         return new Promise((resolve, reject) => {
-            db.get('SELECT * FROM pod_form WHERE client_id = ?', [id], (err, row) => {
+            db.all('SELECT * FROM pod_form WHERE client_id = ?', [id], (err, row) => {
                 if (err) reject(err);
                 else resolve(row);
             });

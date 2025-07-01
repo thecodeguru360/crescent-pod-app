@@ -124,7 +124,7 @@ const DataTable = ({ data }) => {
             table.setPageSize(Number(e.target.value));
           }}
         >
-          {[5, 10, 15, 20].map((size) => (
+          {[10, 20, 30].map((size) => (
             <option key={size} value={size}>
               Show {size}
             </option>

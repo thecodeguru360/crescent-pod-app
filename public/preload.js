@@ -9,5 +9,7 @@ contextBridge.exposeInMainWorld("api", {
     addClient: (client_name) => ipcRenderer.invoke("add-client", client_name),
     getClientByName: (client_name) => ipcRenderer.invoke("get-client-by-name", client_name),
     getClients: () => ipcRenderer.invoke("get-clients"),
+    exportSQL: () => ipcRenderer.invoke('export-sql'),
+    importSQL: () => ipcRenderer.invoke('import-sql'),
 });
 

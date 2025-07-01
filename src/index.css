@@ -91,6 +91,9 @@ body {
   flex-direction: column;
   gap: 14px;
 }
+.search-card img {
+  width: 64px;
+}
 
 .searchBtn {
   padding: 8px 16px;

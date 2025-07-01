@@ -100,8 +100,6 @@ const SearchPod = () => {
     if (window.api) {
       if (window.api.getFormByClientId) {
         window.api.getFormByClientId(client_id).then((response) => {
-          console.log(typeof response);
-
           if (response) setForms(response);
         });
       }
@@ -113,7 +111,6 @@ const SearchPod = () => {
         window.api.getFormById(form_id).then((response) => {
           console.log(response);
           console.log(typeof response);
-
           if (response) setForms([response]);
         });
       }
@@ -125,13 +122,9 @@ const SearchPod = () => {
       if (window.api.getFormByDate) {
         window.api.getFormByDate(date).then((response) => {
           console.log(response);
-          console.log(typeof response);
+
           if (response) {
-            if (typeof response === "object") {
-              setForms([response]);
-            } else {
-              setForms(response);
-            }
+            setForms(response);
           }
         });
       }
