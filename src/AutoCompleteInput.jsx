@@ -27,7 +27,7 @@ const AutocompleteInput = ({
   });
 
   useEffect(() => {
-    if (value && typeof value === "string") {
+    if (value && typeof value === "string" && value.length > 1) {
       const filtered = suggestions.filter((item) =>
         item.client_name.toLowerCase().includes(value.toLowerCase())
       );

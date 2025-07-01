@@ -4,6 +4,7 @@ import Home from "./Home.jsx";
 import ProofOfDeliveryForm from "./ProofOfDeliveryForm";
 import ProofOfDeliveryView from "./ProofOfDeliveryView.jsx";
 import SearchPod from "./SearchPod.jsx";
+import BackupPage from "./BackupPage.jsx";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/add-form" element={<ProofOfDeliveryForm />} />
         <Route path="/search" element={<SearchPod />} />
+        <Route path="/backup" element={<BackupPage />} />
         <Route path="/view-form/:id" element={<ProofOfDeliveryView />} />
       </Routes>
     </Router>
