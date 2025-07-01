@@ -28,7 +28,7 @@ const Home = () => (
             <p>Search POD</p>
           </div>
         </Link>
-        <Link className="control-action" to="/data">
+        <Link className="control-action" to="/backup">
           <div className="control-item">
             <img
               src={process.env.PUBLIC_URL + "/export.png"}
