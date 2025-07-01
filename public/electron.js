@@ -1,12 +1,23 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
-
-const dbModules = require('../database/db');
+const isDev = require("electron-is-dev");
+const dbModules = require(isDev
+    ? path.join(__dirname, "../database/db")
+    : path.join(process.resourcesPath, "database/db"));
 const fs = require('fs');
 
-const dbPath = path.resolve(__dirname, '../database/crescent_pod.db');
 const sqlite3 = require('sqlite3').verbose();
 
+// Decide where to store the actual working DB
+const dbPath = isDev
+    ? path.resolve(__dirname, "../database/crescent_pod.db") // dev
+    : path.join(app.getPath("userData"), "crescent_pod.db"); // prod
+
+// If running in production and DB doesn't exist yet, copy from default
+if (!isDev && !fs.existsSync(dbPath)) {
+    const defaultDb = path.join(process.resourcesPath, "database/crescent_pod.db");
+    fs.copyFileSync(defaultDb, dbPath); // Copy bundled DB to writable location
+}
 
 
 function createWindow() {
@@ -20,10 +31,15 @@ function createWindow() {
             nodeIntegration: false,
         },
     });
+    if (isDev) {
+        win.webContents.openDevTools();
+    }
 
     console.log("Preload path:", path.join(__dirname, "preload.js"));
 
-    win.loadURL('http://localhost:3000');
+    win.loadURL(isDev
+        ? "http://localhost:3000"
+        : `file://${path.join(__dirname, "../build/index.html")}`);
 }
 
 app.whenReady().then(createWindow);

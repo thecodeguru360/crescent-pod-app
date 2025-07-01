@@ -1,7 +1,35 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const dbPath = path.resolve(__dirname, 'crescent_pod.db');
+// const dbPath = path.resolve(__dirname, 'crescent_pod.db');
+
+const fs = require("fs");
+const { app } = require("electron");
+const isDev = require("electron-is-dev");
+
+const devDbPath = path.resolve(__dirname, "crescent_pod.db");
+const prodDbPath = path.join(app.getPath("userData"), "crescent_pod.db");
+
+let dbPath;
+
+if (isDev) {
+    dbPath = devDbPath;
+} else {
+    dbPath = prodDbPath;
+
+    // If DB doesn't exist yet in userData, copy it from packaged resources
+    const packagedDbPath = path.join(process.resourcesPath, "database/crescent_pod.db");
+
+    if (!fs.existsSync(dbPath)) {
+        try {
+            fs.copyFileSync(packagedDbPath, dbPath);
+            console.log("✅ Copied default DB to userData folder:", dbPath);
+        } catch (err) {
+            console.error("❌ Failed to copy DB:", err);
+        }
+    }
+}
+
 const db = new sqlite3.Database(dbPath);
 
 // Create tables if not exists

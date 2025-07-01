@@ -1,6 +1,10 @@
 {
   "name": "crescent-pod-app",
   "version": "0.1.0",
+  "author": {
+    "name": "Laeeq Ahmad"
+  },
+  "description": "Electron application that will generate and manage proof of delivery documents",
   "private": true,
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
@@ -9,6 +13,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "concurrently": "^9.2.0",
+    "electron-is-dev": "^3.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.59.0",
@@ -51,6 +56,16 @@
   },
   "build": {
     "appId": "com.webnbit.crescentpod",
+    "productName": "POD Crescent Services",
+    "win": {
+      "icon": "build/icon.ico",
+      "target": "nsis"
+    },
+"nsis": {
+    "oneClick": true,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": false
+  },
     "files": [
       "build/**/*",
       "public/electron.js",
