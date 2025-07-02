@@ -1,8 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-
-// const dbPath = path.resolve(__dirname, 'crescent_pod.db');
-
 const fs = require("fs");
 const { app } = require("electron");
 const isDev = require("electron-is-dev");
@@ -18,12 +15,19 @@ if (isDev) {
     dbPath = prodDbPath;
 
     // If DB doesn't exist yet in userData, copy it from packaged resources
-    const packagedDbPath = path.join(process.resourcesPath, "database/crescent_pod.db");
+    // Fixed: Use path.join with __dirname for better path resolution
+    const packagedDbPath = path.join(__dirname, "crescent_pod.db");
 
     if (!fs.existsSync(dbPath)) {
         try {
-            fs.copyFileSync(packagedDbPath, dbPath);
-            console.log("✅ Copied default DB to userData folder:", dbPath);
+            // Check if the packaged DB exists first
+            if (fs.existsSync(packagedDbPath)) {
+                fs.copyFileSync(packagedDbPath, dbPath);
+                console.log("✅ Copied default DB to userData folder:", dbPath);
+            } else {
+                console.log("📝 Creating new database at:", dbPath);
+                // Database will be created when we instantiate sqlite3.Database
+            }
         } catch (err) {
             console.error("❌ Failed to copy DB:", err);
         }
@@ -33,54 +37,52 @@ if (isDev) {
 const db = new sqlite3.Database(dbPath);
 
 // Create tables if not exists
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS users (
+        "id" INTEGER NOT NULL,
+        "username" TEXT NOT NULL,
+        "password" TEXT NOT NULL,
+        PRIMARY KEY("id" AUTOINCREMENT)
+    )`);
+});
 
 db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS  users (
-	"id"	INTEGER NOT NULL,
-	"username"	TEXT NOT NULL,
-	"password"	TEXT NOT NULL,
-	PRIMARY KEY("id" AUTOINCREMENT)
-)`)
-})
+    db.run(`CREATE TABLE IF NOT EXISTS client (
+        "id" INTEGER NOT NULL,
+        "client_name" TEXT NOT NULL,
+        PRIMARY KEY("id" AUTOINCREMENT)
+    )`);
+});
 
 db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS  client (
-	"id"	INTEGER NOT NULL,
-	"client_name"	TEXT NOT NULL,
-	PRIMARY KEY("id" AUTOINCREMENT)
-)`)
-})
-
-db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS  pod_form (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    client_id INTEGER,
-    dated TEXT,
-    consigneeName TEXT,
-    blAwbNo TEXT,
-    goodsDescription TEXT,
-    totalPackages TEXT,
-    totalGrossWeight TEXT,
-    totalNetWeight TEXT,
-    vessel TEXT,
-    igmVirNo TEXT,
-    noOfPackages TEXT,
-    containerNo TEXT,
-    machineNoDate TEXT,
-    vehicleNoType TEXT,
-    driverName TEXT,
-    driverTel TEXT,
-    deliveryPerson TEXT,
-    phoneNo TEXT,
-    pickupAddress TEXT,
-    deliveryAddress TEXT,
-    contactPersonCell TEXT,
-    remarks TEXT
-)`);
+    db.run(`CREATE TABLE IF NOT EXISTS pod_form (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        client_id INTEGER,
+        dated TEXT,
+        consigneeName TEXT,
+        blAwbNo TEXT,
+        goodsDescription TEXT,
+        totalPackages TEXT,
+        totalGrossWeight TEXT,
+        totalNetWeight TEXT,
+        vessel TEXT,
+        igmVirNo TEXT,
+        noOfPackages TEXT,
+        containerNo TEXT,
+        machineNoDate TEXT,
+        vehicleNoType TEXT,
+        driverName TEXT,
+        driverTel TEXT,
+        deliveryPerson TEXT,
+        phoneNo TEXT,
+        pickupAddress TEXT,
+        deliveryAddress TEXT,
+        contactPersonCell TEXT,
+        remarks TEXT
+    )`);
 });
 
 module.exports = {
-
     addClient: (client_name) => {
         return new Promise((resolve, reject) => {
             db.run('INSERT INTO client(client_name) VALUES (?)', [client_name], function (err) {
@@ -89,10 +91,9 @@ module.exports = {
             });
         });
     },
+
     getClientByName: (clientName) => {
         return new Promise((resolve, reject) => {
-            // Using LIKE for partial matching, and wrapping the search term with '%'
-            // This allows for autocomplete functionality (e.g., searching "Jo" finds "John Doe")
             const searchTerm = `%${clientName}%`;
             db.all('SELECT id, client_name FROM client WHERE client_name LIKE ?', [searchTerm], (err, rows) => {
                 if (err) {
@@ -104,6 +105,7 @@ module.exports = {
             });
         });
     },
+
     getClients: () => {
         return new Promise((resolve, reject) => {
             db.all('SELECT * FROM client', [], (err, rows) => {
@@ -112,6 +114,7 @@ module.exports = {
             });
         });
     },
+
     getAllForm: () => {
         return new Promise((resolve, reject) => {
             db.all('SELECT * FROM pod_form', [], (err, rows) => {
@@ -120,6 +123,7 @@ module.exports = {
             });
         });
     },
+
     getRecentForms: () => {
         return new Promise((resolve, reject) => {
             db.all('SELECT id,dated,consigneeName FROM pod_form ORDER BY id DESC LIMIT 30', [], (err, rows) => {
@@ -128,9 +132,9 @@ module.exports = {
             });
         });
     },
+
     addForm: (formData) => {
         return new Promise((resolve, reject) => {
-            // Define the columns in the order they appear in the INSERT statement
             const columns = [
                 'client_id', 'dated', 'consigneeName', 'blAwbNo', 'goodsDescription',
                 'totalPackages', 'totalGrossWeight', 'totalNetWeight', 'vessel',
@@ -140,7 +144,6 @@ module.exports = {
                 'remarks'
             ];
 
-            // Map formData keys to an array of values, ensuring order matches columns
             const values = [
                 formData.client_id || null,
                 formData.dated || null,
@@ -166,7 +169,6 @@ module.exports = {
                 formData.remarks || null
             ];
 
-            // Create placeholders for the values in the SQL query
             const placeholders = columns.map(() => '?').join(', ');
             const insertSql = `INSERT INTO pod_form(${columns.join(', ')}) VALUES (${placeholders})`;
 
@@ -175,13 +177,13 @@ module.exports = {
                     console.error("Error inserting form data:", err.message);
                     reject(err);
                 } else {
-                    // 'this.lastID' will contain the ID of the last inserted row
                     console.log(`A row has been inserted with rowid ${this.lastID}`);
                     resolve({ id: this.lastID, message: "Form data inserted successfully." });
                 }
             });
         });
     },
+
     getFormById: (id) => {
         return new Promise((resolve, reject) => {
             db.get('SELECT * FROM pod_form WHERE id = ?', [id], (err, row) => {
@@ -190,24 +192,23 @@ module.exports = {
             });
         });
     },
+
+    // Fixed: Removed SQL injection vulnerability
     getFormByDate: (date) => {
-        const searchTerm = `%${date}%`;
-        const query = `SELECT * FROM pod_form WHERE dated LIKE '${searchTerm}' ORDER BY id DESC`
         return new Promise((resolve, reject) => {
-            db.all(query, [], (err, row) => {
-                if (err) reject(err);
-                else resolve(row);
+            const searchTerm = `%${date}%`;
+            db.all('SELECT * FROM pod_form WHERE dated LIKE ? ORDER BY id DESC', [searchTerm], (err, rows) => {
+                if (err) {
+                    console.error("Error retrieving forms by date:", err.message);
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
             });
         });
     },
-    getFormByClientId: (id) => {
-        return new Promise((resolve, reject) => {
-            db.all('SELECT * FROM pod_form WHERE client_id = ?', [id], (err, row) => {
-                if (err) reject(err);
-                else resolve(row);
-            });
-        });
-    },
+
+    // Fixed: Removed duplicate function definition
     getFormByClientId: (clientId) => {
         return new Promise((resolve, reject) => {
             db.all('SELECT * FROM pod_form WHERE client_id = ?', [clientId], (err, rows) => {
