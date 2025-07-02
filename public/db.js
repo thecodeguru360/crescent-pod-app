@@ -3,36 +3,36 @@ const path = require('path');
 const fs = require("fs");
 const { app } = require("electron");
 const isDev = require("electron-is-dev");
+const dbPath = require("./dbPath").dbPath;;
+// const devDbPath = path.resolve(__dirname, "../database/crescent_pod.db");
+// const prodDbPath = path.join(app.getPath("userData"), "crescent_pod.db");
 
-const devDbPath = path.resolve(__dirname, "crescent_pod.db");
-const prodDbPath = path.join(app.getPath("userData"), "crescent_pod.db");
+// let dbPath;
 
-let dbPath;
+// if (isDev) {
+//     dbPath = devDbPath;
+// } else {
+//     dbPath = prodDbPath;
 
-if (isDev) {
-    dbPath = devDbPath;
-} else {
-    dbPath = prodDbPath;
+// If DB doesn't exist yet in userData, copy it from packaged resources
+// Fixed: Use path.join with __dirname for better path resolution
+// const packagedDbPath = path.join(__dirname, "crescent_pod.db");
 
-    // If DB doesn't exist yet in userData, copy it from packaged resources
-    // Fixed: Use path.join with __dirname for better path resolution
-    const packagedDbPath = path.join(__dirname, "crescent_pod.db");
-
-    if (!fs.existsSync(dbPath)) {
-        try {
-            // Check if the packaged DB exists first
-            if (fs.existsSync(packagedDbPath)) {
-                fs.copyFileSync(packagedDbPath, dbPath);
-                console.log("✅ Copied default DB to userData folder:", dbPath);
-            } else {
-                console.log("📝 Creating new database at:", dbPath);
-                // Database will be created when we instantiate sqlite3.Database
-            }
-        } catch (err) {
-            console.error("❌ Failed to copy DB:", err);
-        }
-    }
-}
+// if (!fs.existsSync(dbPath)) {
+//     try {
+//         // Check if the packaged DB exists first
+//         if (fs.existsSync(packagedDbPath)) {
+//             fs.copyFileSync(packagedDbPath, dbPath);
+//             console.log("✅ Copied default DB to userData folder:", dbPath);
+//         } else {
+//             console.log("📝 Creating new database at:", dbPath);
+//             // Database will be created when we instantiate sqlite3.Database
+//         }
+//     } catch (err) {
+//         console.error("❌ Failed to copy DB:", err);
+//     }
+// }
+// }
 
 const db = new sqlite3.Database(dbPath);
 
