@@ -96,7 +96,7 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
       </ActionBar>
       <div>
         <div className="form-header">
-          <h1 className="form-title">PROOF OF DELIVERY</h1>
+          <h1 className="form-title">NEW PROOF OF DELIVERY</h1>
           <p className="form-subtitle">ڈیلیوری کا ثبوت</p>
         </div>
 
@@ -351,7 +351,7 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
           </div>
         </div>
 
-        <div className="signature-section">
+        {/* <div className="signature-section">
           <div className="signature-header">
             <div className="signature-header-cell">
               <div>Arrival Date/Time</div>
@@ -371,9 +371,9 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
             <div className="signature-cell"></div>
             <div className="signature-cell"></div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="receiver-section">
+        {/* <div className="receiver-section">
           <div className="receiver-header">
             <div className="receiver-header-cell">
               <div>Receiver's Name</div>
@@ -393,7 +393,7 @@ const ProofOfDeliveryForm = ({ onSubmit: onFormSubmit }) => {
             <div className="receiver-cell"></div>
             <div className="receiver-cell"></div>
           </div>
-        </div>
+        </div> */}
         <div className="form-group full-width">
           <div className="label-container">
             <span className="label-en">Remarks:</span>

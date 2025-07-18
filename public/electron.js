@@ -5,50 +5,6 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const dbPath = require("./dbPath").dbPath;
 
-console.log(dbPath);
-// Fix 1: Properly require the database module with .js extension
-
-// Fix 2: Handle database path more robustly
-// let dbPath;
-// if (isDev) {
-//     dbPath = path.resolve(__dirname, "../database/crescent_pod.db");
-// } else {
-//     dbPath = path.join(app.getPath("userData"), "crescent_pod.db");
-
-//     // Copy default database if it doesn't exist
-//     if (!fs.existsSync(dbPath)) {
-//         try {
-//             // Try multiple possible locations for the default database
-//             const possiblePaths = [
-//                 path.join(process.resourcesPath, "database/crescent_pod.db"),
-//                 path.join(__dirname, "crescent_pod.db"),
-//                 path.join(process.resourcesPath, "crescent_pod.db")
-//             ];
-
-//             let defaultDbPath = null;
-//             for (const possiblePath of possiblePaths) {
-//                 if (fs.existsSync(possiblePath)) {
-//                     defaultDbPath = possiblePath;
-//                     break;
-//                 }
-//             }
-
-//             if (defaultDbPath) {
-//                 fs.copyFileSync(defaultDbPath, dbPath);
-//                 console.log("✅ Copied default DB to userData folder:", dbPath);
-//             } else {
-//                 console.log("📝 No default database found, will create new one at:", dbPath);
-//                 // The database will be created when first accessed
-//             }
-//         } catch (err) {
-//             console.error("❌ Failed to copy DB:", err);
-//         }
-//     }
-// }
-
-console.log("Database path:", dbPath);
-console.log("isDev:", isDev);
-console.log("__dirname:", __dirname);
 
 const dbModules = require(isDev
     ? path.join(__dirname, "./db.js")
@@ -61,22 +17,19 @@ function createWindow() {
         width: 900,
         height: 700,
         webPreferences: {
-            devTools: true,
             preload: path.resolve(__dirname, "./preload.js"),
             contextIsolation: true,
             nodeIntegration: false,
         },
     });
 
-    if (isDev) {
-        win.webContents.openDevTools();
+    if (app.isPackaged) {
+        win.loadFile(path.join(__dirname, "../build/index.html"))
+    } else {
+        win.loadURL("http://localhost:3000")
+        win.webContents.openDevTools()
     }
 
-    console.log("Preload path:", path.join(__dirname, "preload.js"));
-
-    win.loadURL(isDev
-        ? "http://localhost:3000"
-        : `file://${path.join(__dirname, "../build/index.html")}`);
 }
 
 app.whenReady().then(createWindow);

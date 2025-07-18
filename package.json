@@ -4,6 +4,7 @@
   "author": {
     "name": "Laeeq Ahmad"
   },
+  "homepage": "./",
   "description": "Electron application that will generate and manage proof of delivery documents",
   "private": true,
   "dependencies": {
@@ -71,6 +72,8 @@
       "build/**/*",
       "public/electron.js",
       "public/preload.js",
+      "public/db.js",
+      "public/dpPath.js",
       "database/**/*"
     ],
     "extraResources": [
